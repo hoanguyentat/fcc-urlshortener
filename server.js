@@ -1,5 +1,6 @@
 var express = require("express");
 var mongodb = require("mongodb");
+var fs = require("fs")
 var mongoClient = mongodb.MongoClient;
 
 var url = 'mongodb://kevinhoa95:HolaNguyen1995@ds145997.mlab.com:45997/urlshortener'
@@ -55,7 +56,19 @@ app.get("/new/:urlString", function(req, res){
          res.end(JSON.stringify(response));
     }
 });
-
+app.get("/", function(req, response) {
+    fs.readFile("index.html", function(err, data){
+       if(err){
+          response.writeHead(404);
+          response.write("Not Found!");
+       }
+       else{
+          response.writeHead(200, {'Content-Type': "text/html"});
+          response.write(data);
+       }
+       response.end();
+    })
+})
 app.get("/:id", function(req, res){
     var response = "";
     var url_id = req.params.id;
